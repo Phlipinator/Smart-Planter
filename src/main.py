@@ -4,17 +4,20 @@ from machine import Pin, ADC
 from time import sleep
 import random
 
-############ Variables ############
-# the number of files on the SD card
+############ Parameters ############
+# The number of files on the SD card
 files = 2
 
-# time amount of seconds you want to wait after a sound was made
+# The amount of seconds you want to wait after a sound was made
 timer = 5
+
+# The moisture threshold (you may need to play around with this a little)
+threshold = 2300
 
 ############ Start ############
 
 # Initialize PIR sensor with Pin 5
-pir = Pin(5, Pin.IN, Pin.PULL_UP) # enable internal pull-up resistor
+pir = Pin(5, Pin.IN, Pin.PULL_UP)
 
 # Initialize moisture sensor with Pin 12
 moisture_pin = Pin(12, Pin.IN)
@@ -26,24 +29,31 @@ df.init()
 
 ############ Functions ############
     
-async def playSound():
+async def playSound(folder, file):
     await df.wait_available() # Optional, make sure DFPlayer is booted.
 
     # setting volume to 15 of 30
     await df.volume(15)
-    #print("DFPlayer reports volume:", await df.volume())
 
-    rnd = random.randint(1, files)
-    await df.play(1, rnd)
-    print("playing file " + str(rnd))
+    await df.play(folder, file)
 
+def main():
+    while True:
+        try:
+            pirVal = pir.value()
+            mv = adc.read_uv() // 1000
+            
+            if pirVal == 1 and mv > threshold:
+                rnd = random.randint(1, files)
+                run(playSound(1, rnd))
+                sleep(timer)
+            sleep(1)
+        except:
+            print("Error")
 
-while True:
-    pirVal = pir.value()
-    mv = adc.read_uv() // 1000
-    print("current moisture lvl: " + str(mv))
-    
-    if pirVal == 1 and mv > 2300:
-        run(playSound())
-        sleep(timer)
-    sleep(1)
+############ Execution ############
+            
+# Play Sound after init is complete
+run(playSound(2, 1))
+sleep(3)
+run(main())
