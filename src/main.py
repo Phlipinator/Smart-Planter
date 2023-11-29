@@ -29,13 +29,13 @@ df.init()
 
 ############ Functions ############
     
-async def playSound(folder, file):
-    await df.wait_available() # Optional, make sure DFPlayer is booted.
+def playSound(folder, file):
+    run(df.wait_available()) # Optional, make sure DFPlayer is booted.
 
     # setting volume to 15 of 30
-    await df.volume(15)
+    run(df.volume(15))
 
-    await df.play(folder, file)
+    run(df.play(folder, file))
 
 def main():
     while True:
@@ -44,8 +44,8 @@ def main():
             mv = adc.read_uv() // 1000
             
             if pirVal == 1 and mv > threshold:
-                rnd = random.randint(1, files)
-                run(playSound(1, rnd))
+                rnd = random.randint(1, run(df.num_files_folder(1)))
+                playSound(1, rnd)
                 sleep(timer)
             sleep(1)
         except:
@@ -54,6 +54,6 @@ def main():
 ############ Execution ############
             
 # Play Sound after init is complete
-run(playSound(2, 1))
+playSound(2, 1)
 sleep(3)
-run(main())
+main()
