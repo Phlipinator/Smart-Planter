@@ -48,8 +48,8 @@ def main():
                 playSound(1, rnd)
                 sleep(timer)
             sleep(1)
-        except:
-            print("Error")
+        except Exception as e:
+            print(e)
 
 ############ Execution ############
             
