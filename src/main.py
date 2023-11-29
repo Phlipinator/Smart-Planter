@@ -44,7 +44,7 @@ def main():
             mv = adc.read_uv() // 1000
             
             if pirVal == 1 and mv > threshold:
-                rnd = random.randint(1, run(df.num_files_folder(1)))
+                rnd = random.randint(1, files)
                 playSound(1, rnd)
                 sleep(timer)
             sleep(1)
