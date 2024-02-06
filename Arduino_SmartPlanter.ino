@@ -10,30 +10,33 @@ DFRobotDFPlayerMini myDFPlayer;
 #define MoistureSensor 12
 #define MotionSensor 5
 
-
-void setup() {
+void setup()
+{
   FPSerial.begin(9600, SERIAL_8N1, 16, 17); // RX, TX
   Serial.begin(115200);
 
   Serial.println(F("DFRobot DFPlayer Mini Demo"));
   Serial.println(F("Initializing DFPlayer ..."));
 
-  if (!myDFPlayer.begin(FPSerial)) {
+  if (!myDFPlayer.begin(FPSerial))
+  {
     Serial.println(F("Unable to begin: Check connection and SD card."));
-    while (true) {
+    while (true)
+    {
       delay(0); // Prevent WDT reset on ESP
     }
   }
   Serial.println(F("DFPlayer Mini online."));
   myDFPlayer.volume(15);
-  myDFPlayer.playFolder(2, 1);     // Play startup sound
+  myDFPlayer.playFolder(2, 1); // Play startup sound
 
   randomSeed(analogRead(0));
 
   pinMode(MotionSensor, INPUT); // Set the PIR sensor pin as an input
 }
 
-void loop() {
+void loop()
+{
   // Change number of sound files here
   int randomNumber = random(1, 9);
 
@@ -42,7 +45,10 @@ void loop() {
 
   int sensorValue = digitalRead(MotionSensor); // read the motion sensor value
 
-  if (sensorValue == HIGH && moisture < 1000) { // Check if the sensor is HIGH
+  // High Value -> Dry
+  // Low Value -> Wet
+  if (sensorValue == HIGH && moisture > 1500)
+  { // Check if the sensor is HIGH
 
     myDFPlayer.playFolder(1, randomNumber);
 
