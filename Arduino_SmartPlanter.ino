@@ -1,6 +1,6 @@
-#include "Arduino.h"
 #include "DFRobotDFPlayerMini.h"
 #include <HardwareSerial.h>
+#include <esp_task_wdt.h>
 
 HardwareSerial FPSerial(1);
 
@@ -54,6 +54,8 @@ void loop()
 
     delay(100000); // Wait for a second to avoid multiple detections
   }
+
+  esp_task_wdt_reset(); // Reset the watchdog timer to avoid reset
 
   delay(1000);
 }
