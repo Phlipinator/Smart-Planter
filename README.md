@@ -1,4 +1,4 @@
-# ThePhlipinator's Smart Planter
+# Philipp's Smart Planter
 
 This Planter was designed and programmed by me and is free to use _non-commercially_ for everybody who wants to.
 
